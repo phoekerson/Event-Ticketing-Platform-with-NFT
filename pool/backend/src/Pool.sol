@@ -35,5 +35,15 @@ contract Pool is Ownable{
         totalCollected += msg.value;
 
         emit Contribute(msg.sender, msg.value);
+        /// @notice Permettre aux utilisateurs de retirer les ethers de la cagnotte
+        function withdraw() external onlyOwner{
+            if(block.timestamp < end || totalCollected < goal){
+                revert CollectNotFinished()
+            }
+            (bool sent) = msg.sender.call{value: address(this).balance}("")
+            if(!sent){
+                revert FailedToSendEther();
+            }
+        }
     }
 }
