@@ -1,0 +1,9 @@
+[submodule "phokerson/lib/forge-std"]
+	path = phokerson/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
+[submodule "pool/backend/lib/forge-std"]
+	path = pool/backend/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
+[submodule "pool/backend/lib/openzeppelin-contracts"]
+	path = pool/backend/lib/openzeppelin-contracts
+	url = https://github.com/Openzeppelin/openzeppelin-contracts
