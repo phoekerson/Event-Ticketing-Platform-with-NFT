@@ -40,7 +40,27 @@ contract Pool is Ownable{
             if(block.timestamp < end || totalCollected < goal){
                 revert CollectNotFinished()
             }
-            (bool sent) = msg.sender.call{value: address(this).balance}("")
+            (bool sent,) = msg.sender.call{value: address(this).balance}("")
+            if(!sent){
+                revert FailedToSendEther();
+            }
+        }
+        /// @notice Permettre aux utilisateurs de récuperer leur argent
+        function refund() external {
+            if(block.timestamp < end){
+               revert CollectNotFinished();
+            }
+            if(totalCollected >= goal){
+                revert GoalAlreadyReached();
+            }
+            if(contributions[msg.sender] == 0){
+                revert NoContribution();
+            }
+
+            uint256 amount = contributions[msg.sender];
+            contributions[msg.sender] = 0;
+            totalCollected -= amount;
+            (bool sent,) = msg.sender.call{value: amount}("");
             if(!sent){
                 revert FailedToSendEther();
             }
