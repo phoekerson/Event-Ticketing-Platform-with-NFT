@@ -29,4 +29,57 @@ contract PoolTest is Test{
         uint256 _goal = pool.goal();
         assertEq(goal, _goal);
     }
+
+    //contribute 
+    function test_RevertWhen_EndIsReached() public {
+        vm.warp(pool.end() + 3600);
+        bytes4 selector = bytes4(keccak256
+        ("CollectIsFinished()"));
+        vm.expectRevert(abi.encodeWithSelector(selector));
+
+        vm.prank(addr1);
+        vm.deal(addr1, 1 ether);
+        pool.contribute{value: 1 ether}();
+    }
+
+    function test_RevertWhen_NotEnoughFunds() public{
+        bytes4 selector = bytes4(keccak256
+        ("NotEnoughFunds()"));
+        vm.expectRevert(abi.encodeWithSelector
+        (selector));
+
+        vm.prank(addr1);
+        pool.contribute();
+    }
+
+    function test_ExpectEmit_SuccessfullContribute (uint96 _amount) public{
+            vm.assume(_amount > 0);
+            vm.expectEmit(true, false, false, true);
+            emit Pool.Contribute(address(addr1), _amount);
+            vm.prank(addr1);
+            vm.deal(addr1, _amount);
+            pool.contribute{value: _amount}();
+    }
+
+    
+
+    function test_RevertWhen_NotTheOwner() public{
+        bytes4 selector = bytes4(keccak256("OwnableUnauthorizedAccount(address)"));
+        vm.expectRevert(abi.encodeWithSelector(selector, addr1));
+
+        vm.prank(addr1);
+        pool.withdraw();
+    }
+
+    function test_RevertWhen_EndIsNotReached() public{
+        bytes4 selector = bytes4(keccak256
+        ("CollectNotFinished()"));
+        vm.expectRevert(abi.encodeWithSelector
+        (selector));
+        vm.prank(owner);
+        pool.withdraw();
+
+    }
+
+
 }
