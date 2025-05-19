@@ -91,8 +91,26 @@ contract PoolTest is Test{
         vm.expectRevert(abi.encodeWithSelector(selector));
         vm.prank(owner);
         pool.withdraw();
+    }
+    function test_RevertWhen_WithdrawFailedToSendEther() public{
+        pool = new Pool(duration, goal);
+        vm.prank(addr1);
+        vm.deal(addr1, 6 ether);
+        pool.contribute{value: 6 ether}();
+
+        vm.prank(addr2);
+        vm.deal(addr2, 5 ether);
+        pool.contribute{value: 5 ether}();
+
+        vm.warp(pool.end() + 3600);
+        bytes4 selector = bytes4(keccak256("FailedToSendEther()"));
+        vm.expectRevert(abi.encodeWithSelector(selector));
+
+        pool.withdraw();
 
     }
+
+
 
 
 }
