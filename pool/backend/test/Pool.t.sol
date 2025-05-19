@@ -80,6 +80,19 @@ contract PoolTest is Test{
         pool.withdraw();
 
     }
+    function test_RevertWhen_GoalIsNotReached()public{
+        
+        vm.prank(addr1);
+        vm.deal(addr1, 5 ether);
+        pool.contribute{value: 5 ether}();
+
+        vm.warp(pool.end() + 3600);
+        bytes4 selector = bytes4(keccak256 ("CollectNotFinished()"));
+        vm.expectRevert(abi.encodeWithSelector(selector));
+        vm.prank(owner);
+        pool.withdraw();
+
+    }
 
 
 }
