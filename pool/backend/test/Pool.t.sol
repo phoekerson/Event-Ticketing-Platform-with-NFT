@@ -152,6 +152,51 @@ contract PoolTest is Test{
         pool.refund();
     }
 
+    function test_RevertWhen_NoContribution() public{
+        vm.prank(addr1);
+        vm.deal(addr1, 1 ether);
+        pool.contribute{value: 1 ether}();
+
+        vm.prank(addr2);
+        vm.deal(addr2, 6 ether);
+        pool.contribute{value: 6 ether}();
+
+        vm.warp(pool.end() + 3600);
+        bytes4 selector = bytes4(keccak256("NoContribution()"));
+        vm.expectRevert(abi.encodeWithSelector(selector));
+
+        vm.prank(addr3);
+        pool.refund();
+    }
+
+    function test_When_RefundFailedToSendEther() public {
+        vm.deal(address(this), 2 ether);
+        pool.contribute{value: 2 ether}();
+        vm.warp(pool.end() + 3600);
+        bytes4 selector = bytes4(keccak256("FailedToSendEther()"));
+        vm.expectRevert(abi.encodeWithSelector(selector));
+        pool.refund();
+
+    }
+
+    function test_refund() public{
+        vm.prank(addr1);
+        vm.deal(addr1, 1 ether);
+        pool.contribute{value: 1 ether}();
+
+        vm.prank(addr2);
+        vm.deal(addr2, 1 ether);
+        pool.contribute{value: 1 ether}();
+        vm.warp(pool.end() + 3600);
+        uint256 balanceBeforeRefund = addr2.balance;
+        vm.prank(addr2);
+        pool.refund();
+
+        uint256 balanceAfterRefund = addr2.balance;
+        assertEq(balanceBeforeRefund = 1 ether, balanceAfterRefund);
+
+    }
+
 
 
 
