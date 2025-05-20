@@ -137,6 +137,21 @@ contract PoolTest is Test{
         pool.refund();
     }
 
+    function test_RevertWhen_GoalAlreadyReached() public{
+        vm.prank(addr1);
+        vm.deal(addr1, 6 ether);
+        pool.contribute{value: 6 ether}();
+
+        vm.prank(addr2);
+        vm.deal(addr2, 5 ether);
+        pool.contribute{value: 5 ether}();
+
+        vm.warp(pool.end() + 3600);
+        bytes4 selector = bytes4(keccak256("GoalAlreadyReached()"));
+        vm.expectRevert(abi.encodeWithSelector(selector));
+        pool.refund();
+    }
+
 
 
 
