@@ -14,6 +14,7 @@ import {
   QueryClient,
 } from "@tanstack/react-query";
 
+
 const config = getDefaultConfig({
   appName: 'My RainbowKit App',
   projectId: 'process.env.NEXT_PUBLIC_WALLETCONNECT_ID',
