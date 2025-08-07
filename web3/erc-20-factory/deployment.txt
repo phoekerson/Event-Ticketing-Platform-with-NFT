@@ -1,0 +1,70 @@
+caleb@DESKTOP-TIOPTLO:~/web3/erc-20-factory$ forge script script/Deploy.s.sol:DeployScript --rpc-url https://eth-sepolia.g.alchemy.com/v2/cV3L3n2-5WrROE2gfqcV4 --broadcast
+[⠊] Compiling...
+No files changed, compilation skipped
+Traces:
+  [2110738] → new DeployScript@0x9f7cF1d1F558E57ef88a59ac3D47214eF25B6A06
+    └─ ← [Return] 10432 bytes of code
+
+  [2323191] DeployScript::run()
+    ├─ [0] VM::envUint("PRIVATE_KEY") [staticcall]
+    │   └─ ← [Return] <env var value>
+    ├─ [0] VM::addr(<pk>) [staticcall]
+    │   └─ ← [Return] 0xb3e6B58E59651932488A33AcB429c68317989944
+    ├─ [0] console::log("Deploying contracts with account:", 0xb3e6B58E59651932488A33AcB429c68317989944) [staticcall]
+    │   └─ ← [Stop]
+    ├─ [0] console::log("Account balance:", 88774839322759506 [8.877e16]) [staticcall]
+    │   └─ ← [Stop]
+    ├─ [0] VM::startBroadcast(<pk>)
+    │   └─ ← [Return]
+    ├─ [1411272] → new TokenFactory@0xa76f980E99fdE4f8B83bD0e8199FB6ED37df9080
+    │   └─ ← [Return] 7049 bytes of code
+    ├─ [0] console::log("TokenFactory deployed at:", TokenFactory: [0xa76f980E99fdE4f8B83bD0e8199FB6ED37df9080]) [staticcall]
+    │   └─ ← [Stop]
+    ├─ [852160] TokenFactory::deployTokenForSelf("Caleb", "CLB", 1000000 [1e6])
+    │   ├─ [702303] → new MyToken@0x037fE916CaB40E8f31246e6a12161D3977BE6aFf
+    │   │   ├─ emit Transfer(from: 0x0000000000000000000000000000000000000000, to: 0xb3e6B58E59651932488A33AcB429c68317989944, value: 1000000000000000000000000 [1e24])
+    │   │   └─ ← [Return] 2936 bytes of code
+    │   ├─ emit TokenDeployed(tokenAddress: MyToken: [0x037fE916CaB40E8f31246e6a12161D3977BE6aFf], creator: 0xb3e6B58E59651932488A33AcB429c68317989944, name: "Caleb", symbol: "CLB", initialSupply: 1000000000000000000000000 [1e24])
+    │   └─ ← [Return] MyToken: [0x037fE916CaB40E8f31246e6a12161D3977BE6aFf]
+    ├─ [0] console::log("Sample token deployed at:", MyToken: [0x037fE916CaB40E8f31246e6a12161D3977BE6aFf]) [staticcall]
+    │   └─ ← [Stop]
+    ├─ [1170] MyToken::name() [staticcall]
+    │   └─ ← [Return] "Caleb"
+    ├─ [0] console::log("Token name:", "Caleb") [staticcall]
+    │   └─ ← [Stop]
+    ├─ [1191] MyToken::symbol() [staticcall]
+    │   └─ ← [Return] "CLB"
+    ├─ [0] console::log("Token symbol:", "CLB") [staticcall]
+    │   └─ ← [Stop]
+    ├─ [340] MyToken::totalSupply() [staticcall]
+    │   └─ ← [Return] 1000000000000000000000000 [1e24]
+    ├─ [0] console::log("Token total supply:", 1000000000000000000000000 [1e24]) [staticcall]
+    │   └─ ← [Stop]
+    ├─ [404] MyToken::owner() [staticcall]
+    │   └─ ← [Return] 0xb3e6B58E59651932488A33AcB429c68317989944
+    ├─ [0] console::log("Token owner:", 0xb3e6B58E59651932488A33AcB429c68317989944) [staticcall]
+    │   └─ ← [Stop]
+    ├─ [0] VM::stopBroadcast()
+    │   └─ ← [Return]
+    ├─ [0] VM::toString(TokenFactory: [0xa76f980E99fdE4f8B83bD0e8199FB6ED37df9080]) [staticcall]
+    │   └─ ← [Return] "0xa76f980E99fdE4f8B83bD0e8199FB6ED37df9080"
+    ├─ [0] VM::toString(MyToken: [0x037fE916CaB40E8f31246e6a12161D3977BE6aFf]) [staticcall]
+    │   └─ ← [Return] "0x037fE916CaB40E8f31246e6a12161D3977BE6aFf"
+    ├─ [0] VM::toString(0xb3e6B58E59651932488A33AcB429c68317989944) [staticcall]
+    │   └─ ← [Return] "0xb3e6B58E59651932488A33AcB429c68317989944"
+    ├─ [0] VM::writeFile("./deployments.json", "{\n  \"factory\": \"0xa76f980E99fdE4f8B83bD0e8199FB6ED37df9080\",\n  \"sampleToken\": \"0x037fE916CaB40E8f31246e6a12161D3977BE6aFf\",\n  \"deployer\": \"0xb3e6B58E59651932488A33AcB429c68317989944\"\n}")
+    │   └─ ← [Revert] vm.writeFile: the path deployments.json is not allowed to be accessed for write operations
+    └─ ← [Revert] vm.writeFile: the path deployments.json is not allowed to be accessed for write operations
+
+
+
+== Logs ==
+  Deploying contracts with account: 0xb3e6B58E59651932488A33AcB429c68317989944
+  Account balance: 88774839322759506
+  TokenFactory deployed at: 0xa76f980E99fdE4f8B83bD0e8199FB6ED37df9080
+  Sample token deployed at: 0x037fE916CaB40E8f31246e6a12161D3977BE6aFf
+  Token name: Caleb
+  Token symbol: CLB
+  Token total supply: 1000000000000000000000000
+  Token owner: 0xb3e6B58E59651932488A33AcB429c68317989944
+Error: script failed: vm.writeFile: the path deployments.json is not allowed to be accessed for write operations
